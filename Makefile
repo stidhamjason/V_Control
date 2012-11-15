@@ -2,7 +2,7 @@ CC=gcc
 TARGETS=cma.o ma.o $(SHARD) ma ma2 ma2.o
 STATIC=libcma.a
 SHARED=libcma.so
-LDFLAGS=~/Desktop/cma/libcma.*
+LDFLAGS=~/Desktop/HW8/Test/V_Control/libcma.*
 DIRNAME=$$(pwd)
 BASE=`basename $(DIRNAME)`
 
