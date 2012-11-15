@@ -45,10 +45,9 @@ MNode p,prev;
 EXIT
 static void class_printList(MNode list) {
 ENTER
-
   if (!list)
     return;
-  printf("Node %p, %d\n",list,list->size);
+  printf("Node %p, %ud\n",list,list->size);
   class_printList(list->next);
 }
 
@@ -67,7 +66,8 @@ ENTER
   //setup initial list item
   item = (MNode)mem;
   item->size=size-sizeof(struct MemNode);
-  item->next = NULL;
+  item->next = NULL
+  DEBUG("Creating Initial NoUseList with %x: %ud",item,size);
   
   class_nouse = class_AddToList(class_nouse,item);
 }
@@ -92,11 +92,13 @@ ENTER
   MNode best=NULL;
   MNode p;
 
+  DEBUG("Searching for a block of size: %ud",target);
   for (p=class_nouse;p!=NULL;p=p->next) {
     c = p->size - target;
     if (c >= 0 && c<closeness) {
       best = p;
       closeness=c;
+      DEBUG("Best is now: %x size=%ud",best,p->size);
     }
   }
   return best;
@@ -111,12 +113,14 @@ ENTER
 	
 	//we need room for a new header
 	if ( (orgsz-size-sizeof(struct MemNode)) > 0 ) {
+		DEBUG("Node split: %ud => %ud,%ud",org->size,size,orgsz-sizeof(struct MemNode)-size);
 		org->size = size;
 		extra = (MNode)((void*)org+size+sizeof(struct MemNode));
 		extra->next = 0;
 		extra->size = orgsz-sizeof(struct MemNode)-size;
 	}
-	
+		else
+		DEBUG("Node does not have enough size to split:%ud %ud",org->size,size);
 	return extra;
 }
 
