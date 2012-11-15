@@ -151,10 +151,44 @@ ENTER
 EXIT
 //attempt to find adjacent unused nodes and collapse them.
 static void class_garbage() {
-	//Not Implemented
+ENTER
+
+	MNode here = class_nouse;
+	MNode there=here;
+	int counter = 0;
+		
+		while(there)
+		{
+		int startCount=counter;
+			if(NXT(here)==there)
+			{
+				there=here;
+				here->next=there->next;
+				here->size+=(there->size+sizeof(struct MemNode));
+				counter++;
+				printf("in if loop");
+											
+			}
+			
+			if(there->next != NULL){
+				here=here->next;
+				there->next=here->next;
+				break;}
+
+			
+			
+			if(startCount==counter)
+			{
+				if(counter)
+					printf("Final Count %d\n", counter);
+					break;}
+			
+	}
+
 
 }
 
+EXIT
 void class_free(void *ptr) {
 ENTER
 
